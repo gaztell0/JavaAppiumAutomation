@@ -13,8 +13,12 @@ public class MainClassTest extends MainClass {
     @Test
     public void  testGetClassNumber() {
         int class_number = this.getClassNumber();
-        System.out.println(class_number);
         Assert.assertTrue("Метод getClassNumber возвращает число которое не больше 45",class_number > 45);
     }
 
+    @Test
+    public void testGetClassString() {
+        String class_string = this.getClassString();
+        Assert.assertTrue("метод getClassString возвращает строку, в которой нет ни одной из подстрок hello или Hello",class_string.contains("hello") | class_string.contains("Hello"));
+    }
 }
