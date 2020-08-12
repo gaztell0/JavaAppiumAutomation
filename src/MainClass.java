@@ -1,11 +1,11 @@
 public class MainClass {
 
-    private int class_number = 20;
-    private String class_string = "hello, world";
+    private int class_number = 10;
+    private String class_string = "helllo, world";
 
 
     public int getLocalNumber() {
-        return 14;
+        return 11;
     }
 
     public int getClassNumber() {
