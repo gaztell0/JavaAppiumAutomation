@@ -57,7 +57,39 @@ public class FirstTest {
                 "Can not find 'Search Wikipedia' input",
                 5
         );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Can not find X to cancel search",
+                5
+        );
 
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "X is still present on the page",
+                5
+        );
+
+    }
+
+    @Test
+    public void testClearSearch() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Can not find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Can not find search input",
+                5
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Can not find search field",
+                5
+        );
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_close_btn"),
                 "Can not find X to cancel search",
@@ -104,6 +136,12 @@ public class FirstTest {
          WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
          wait.withMessage(error_message + "\n");
          return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+    }
+
+    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds) {
+        WebElement element = waitForElementPresent(by, error_message, 5);
+        element.clear();
+        return element;
     }
 
 }
