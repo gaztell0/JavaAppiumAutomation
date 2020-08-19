@@ -44,7 +44,8 @@ public class FirstTest {
                 5
         );
         waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Object-oriented programming language']"),
                 "Can not find Object-oriented programming language topic searching by 'Java'",
                 15
         );
@@ -118,7 +119,8 @@ public class FirstTest {
                 5
         );
         waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Object-oriented programming language']"),
                 "Can not find 'Search Wikipedia' input",
                 5
         );
@@ -136,13 +138,22 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchFieldContainsText() {
+        assertElementHasText(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Search field doesn't contain expected text",
+                "Search Wikipedia"
+        );
+    }
+
     @After
     public void tearDown() {
         driver.quit();
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeOutInSeconds) {
-        WebDriverWait wait= new WebDriverWait(driver, timeOutInSeconds);
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
@@ -174,5 +185,18 @@ public class FirstTest {
         element.clear();
         return element;
     }
+
+    private void assertElementHasText(By by, String error_message, String expectedText) {
+        WebElement element = waitForElementPresent(by, error_message, 5);
+        String text_element = element.getAttribute("text");
+        Assert.assertEquals(
+                error_message,
+                expectedText,
+                text_element
+        );
+
+    }
+
+
 
 }
