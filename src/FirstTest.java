@@ -147,6 +147,50 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchAndCancel() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Can not find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Liverpool",
+                "Can not find search input",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='City in Merseyside, England, United Kingdom']"),
+                "Can not find 'City in Merseyside, England, United Kingdom' topic searching by 'Liverpool'",
+                15
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Association football club in Liverpool, England']"),
+                "Can not find 'Association football club in Liverpool, England' topic searching by 'Liverpool'",
+                15
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Inter-city rivalry between two English football clubs']"),
+                "Can not find 'Inter-city rivalry between two English football clubs' topic searching by 'Liverpool'",
+                15
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Can not find X to cancel search",
+                5
+        );
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_empty_message"),
+                "Search results are still present on the page",
+                5
+        );
+
+    }
+
     @After
     public void tearDown() {
         driver.quit();
