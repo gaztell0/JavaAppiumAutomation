@@ -191,6 +191,39 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testWordInSearchResults() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Can not find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Liverpool",
+                "Can not find search input",
+                5
+        );
+        assertElementHasWord(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Liverpool']"),
+                "Search result do not contain word 'Liverpool'",
+                "Liverpool"
+        );
+        assertElementHasWord(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Liverpool F.C.']"),
+                "Search result do not contain word 'Liverpool'",
+                "Liverpool"
+        );
+        assertElementHasWord(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Liverpool F.C.–Manchester United F.C. rivalry']"),
+                "Search result do not contain word 'Liverpool'",
+                "Liverpool"
+        );
+    }
+
     @After
     public void tearDown() {
         driver.quit();
@@ -238,7 +271,15 @@ public class FirstTest {
                 expectedText,
                 text_element
         );
+    }
 
+    private void assertElementHasWord(By by, String error_message, String word) {
+        WebElement element = waitForElementPresent(by, error_message, 5);
+        String text_element = element.getAttribute("text");
+        Assert.assertTrue(
+                error_message,
+                text_element.contains(word)
+        );
     }
 
 
