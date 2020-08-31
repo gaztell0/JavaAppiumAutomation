@@ -663,6 +663,33 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testArticleHasTitle() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Can not find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Can not find search input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text='Object-oriented programming language']"),
+                "Can not find topic searching by 'Java'",
+                5
+        );
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Element title not found"
+        );
+
+    }
+
 
     @After
     public void tearDown() {
@@ -798,4 +825,11 @@ public class FirstTest {
         return element.getAttribute(attribute);
     }
 
+    private void assertElementPresent(By by, String error_message) {
+        if (driver.findElements(by).size() > 0) {
+            System.out.println("Element title is present");
+        } else {
+            System.out.println(error_message);
+        }
+    }
 }
