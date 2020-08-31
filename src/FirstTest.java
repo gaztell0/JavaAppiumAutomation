@@ -826,7 +826,8 @@ public class FirstTest {
     }
 
     private void assertElementPresent(By by, String error_message) {
-        if (driver.findElements(by).size() > 0) {
+        List element = driver.findElements(by);
+        if (element.size() > 0) {
             System.out.println("Element title is present");
         } else {
             System.out.println(error_message);
