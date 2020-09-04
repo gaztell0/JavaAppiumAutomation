@@ -206,33 +206,11 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Can not find 'Search Wikipedia' input",
-                5
-        );
-
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
         String search_line = "Linkin Park Diskography";
-
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                search_line,
-                "Can not find search input",
-                5
-        );
-
-        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
-
-        MainPageObject.waitForElementPresent(
-                By.xpath(search_result_locator),
-                "Can not find anything by the request " + search_line,
-                15
-        );
-
-        int amount_of_search_results = MainPageObject.getAmountOfElements(
-                By.xpath(search_result_locator)
-        );
-
+        SearchPageObject.typeSearchLine(search_line);
+        int amount_of_search_results = SearchPageObject.getAmountOfFoundArticles();
         Assert.assertTrue(
                 "We found too few results",
                 amount_of_search_results > 0
