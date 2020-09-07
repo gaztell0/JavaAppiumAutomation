@@ -30,6 +30,15 @@ public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    public void openArticleByName(String name_of_article) {
+        String article_name_xpath = getSavedArticleXpathByTitle(name_of_article);
+        this.waitForElementAndClick(
+                By.xpath(article_name_xpath),
+                "Can not find article by name " + name_of_article,
+                5
+        );
+    }
+
     public void waitForArticleToAppearByTitle(String article_title) {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementPresent(By.xpath(article_xpath), "Can not find saved article by title " + article_title, 15);

@@ -29,4 +29,38 @@ public class MyListsTests extends CoreTestCase {
         MyListPageObject.swipeByArticleToDelete(article_title);
     }
 
+    @Test
+    public void testSaveTwoArticlesToMyList() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        NavigationUI NavigationUI = new NavigationUI(driver);
+        MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        ArticlePageObject.waitForTitleElement();
+        String article_title = ArticlePageObject.getArticleTitle();
+        String name_of_folder = "Learning programming";
+        ArticlePageObject.addArticleToMyList(name_of_folder);
+        ArticlePageObject.closeArticle();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Python");
+        SearchPageObject.clickByArticleWithSubstring("General-purpose programming language");
+        String article_title2 = ArticlePageObject.getArticleTitle();
+        ArticlePageObject.addArticleToExistingMyList(name_of_folder);
+        ArticlePageObject.closeArticle();
+        NavigationUI.clickMyLists();
+        MyListPageObject.openFolderByName(name_of_folder);
+        MyListPageObject.swipeByArticleToDelete(article_title);
+        MyListPageObject.waitForArticleToAppearByTitle(article_title2);
+        MyListPageObject.openArticleByName(article_title2);
+        String title_inside = ArticlePageObject.getArticleTitle();
+        assertEquals(
+                "Article title has been changed",
+                article_title2,
+                title_inside
+        );
+    }
+
 }

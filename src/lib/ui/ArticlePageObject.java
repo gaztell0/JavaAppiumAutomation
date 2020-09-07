@@ -4,6 +4,8 @@ import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.concurrent.TimeUnit;
+
 public class ArticlePageObject extends MainPageObject {
 
     private static final String
@@ -14,10 +16,15 @@ public class ArticlePageObject extends MainPageObject {
         ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
         MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
         MY_LIST_OK_BUTTON = "//*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+        NAME_OF_EXISTING_FOLDER_TMP = "//*[@text='{FOLDER_NAME}']";
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
+    }
+
+    private static String getExistingFolderXpathByName(String name_of_folder) {
+        return NAME_OF_EXISTING_FOLDER_TMP.replace("{FOLDER_NAME}", name_of_folder);
     }
 
     public WebElement waitForTitleElement() {
@@ -39,6 +46,7 @@ public class ArticlePageObject extends MainPageObject {
                 "Can not find button to open article options",
                 5
         );
+
 
         this.waitForOptionsMenuToRender(
                 By.xpath("//*[@text='Change language']"),
@@ -78,6 +86,39 @@ public class ArticlePageObject extends MainPageObject {
                 5
         );
     }
+
+    public void addArticleToExistingMyList(String name_of_folder) {
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_BUTTON),
+                "Can not find button to open article options",
+                5
+        );
+
+        this.waitForOptionsMenuToRender(
+                By.xpath("//*[@text='Change language']"),
+                By.xpath("//*[@text='Share link']"),
+                By.xpath("//*[@text='Add to reading list']"),
+                By.xpath("//*[@text='Find in page']"),
+                By.xpath("//*[@text='Font and theme']"),
+                "Can not find all options in the menu"
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "Can not find option to add article to reading list",
+                5
+        );
+
+        String folder_name_xpath = getExistingFolderXpathByName(name_of_folder);
+
+        this.waitForElementAndClick(
+                By.xpath(folder_name_xpath),
+                "Can not find created folder",
+                5
+        );
+
+    }
+
 
     public void closeArticle() {
         this.waitForElementAndClick(

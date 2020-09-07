@@ -10,7 +10,8 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']" + "//*[@text='{SUBSTRING}']",
-            SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+            SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
+            EMPTY_SEARCH_RESULT = "org.wikipedia:id/search_empty_message";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -35,7 +36,7 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementNotPresent(By.id(SEARCH_CANCEL_BUTTON), "Search cancel button is still present", 5);
     }
     public void clickCancelSearch() {
-        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Can not find and click search cance; button", 5);
+        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Can not find and click search cancel button", 5);
     }
 
     public void typeSearchLine (String search_line) {
@@ -60,4 +61,13 @@ public class SearchPageObject extends MainPageObject {
         );
         return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
     }
+
+    public void waitForEmptySearchResult() {
+        this.waitForElementPresent(
+                By.id(EMPTY_SEARCH_RESULT),
+                "Search results are still present on the page",
+                5
+        );
+    }
+
 }

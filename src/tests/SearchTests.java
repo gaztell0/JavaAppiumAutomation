@@ -38,4 +38,17 @@ public class SearchTests extends CoreTestCase {
         );
     }
 
+    @Test
+    public void testSearchAndCancel() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Liverpool");
+        SearchPageObject.waitForSearchResult("City in Merseyside, England, United Kingdom");
+        SearchPageObject.waitForSearchResult("Association football club in Liverpool, England");
+        SearchPageObject.waitForSearchResult("Inter-city rivalry between two English football clubs");
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.waitForEmptySearchResult();
+    }
+
 }
