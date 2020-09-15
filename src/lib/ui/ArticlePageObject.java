@@ -23,6 +23,7 @@ public class ArticlePageObject extends MainPageObject {
         super(driver);
     }
 
+
     private static String getExistingFolderXpathByName(String name_of_folder) {
         return NAME_OF_EXISTING_FOLDER_TMP.replace("{FOLDER_NAME}", name_of_folder);
     }

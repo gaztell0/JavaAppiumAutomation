@@ -13,6 +13,7 @@ public class MyListsPageObject extends MainPageObject {
         super(driver);
     }
 
+    /* TEMPLATES METHODS */
     private static String getFolderXpathByName(String name_of_folder) {
         return FOLDER_BY_NAME_TMP.replace("{FOLDER_NAME}", name_of_folder);
     }
@@ -20,6 +21,7 @@ public class MyListsPageObject extends MainPageObject {
     private static String getSavedArticleXpathByTitle(String article_title) {
         return ARTICLE_BY_TITLE_TMP.replace("{TITLE}", article_title);
     }
+    /* TEMPLATES METHODS */
 
     public void openFolderByName(String name_of_folder) {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
