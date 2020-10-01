@@ -2,6 +2,8 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -9,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -82,9 +85,9 @@ public class MainPageObject {
         int start_y = (int) (size.height * 0.8);
         int end_y = (int) (size.height * 0.2);
         action
-                .press(x, start_y)
-                .waitAction(timeOfSwipe)
-                .moveTo(x, end_y)
+                .press(PointOption.point(x, start_y))
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe)))
+                .moveTo(PointOption.point(x, end_y))
                 .release()
                 .perform();
     }
@@ -108,6 +111,23 @@ public class MainPageObject {
         }
     }
 
+    public boolean isElementLocateOnTheScreen(String locator) {
+        int element_location_by_y = this.waitForElementPresent(locator, "Can not find element by locator", 1).getLocation().getY();
+        int screen_size_by_y = driver.manage().window().getSize().getHeight();
+        return element_location_by_y < screen_size_by_y;
+    }
+
+    public void swipeUpTillElementAppear(String locator, String error_message, int max_swipes) {
+        int already_swiped = 0;
+        while (!this.isElementLocateOnTheScreen(locator)) {
+            if (already_swiped > max_swipes) {
+                Assert.assertTrue(error_message, this.isElementLocateOnTheScreen(locator));
+            }
+            swipeUpQuick();
+            ++already_swiped;
+        }
+    }
+
     public void swipeElementToLeft(String locator, String error_message) {
         WebElement element = waitForElementPresent(locator, error_message, 10);
         int left_x = element.getLocation().getX();
@@ -118,9 +138,9 @@ public class MainPageObject {
 
         TouchAction action = new TouchAction(driver);
         action
-                .press(right_x, middle_y)
-                .waitAction(150)
-                .moveTo(left_x, middle_y)
+                .press(PointOption.point(right_x, middle_y))
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
+                .moveTo(PointOption.point(left_x, middle_y))
                 .release()
                 .perform();
     }

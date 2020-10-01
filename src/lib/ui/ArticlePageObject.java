@@ -41,10 +41,19 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public void swipeToFooter() {
-        this.swipeUpToFindElement(
-                FOOTER_ELEMENT,
-                "Can not find the end of article", 20
-        );
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER_ELEMENT,
+                    "Can not find the end of article", 20
+            );
+        } else {
+            this.swipeUpTillElementAppear(
+                    FOOTER_ELEMENT,
+                    "Can not find the end of article",
+                    40
+            );
+        }
+
     }
 
     public void addArticleToMyList(String name_of_folder) {

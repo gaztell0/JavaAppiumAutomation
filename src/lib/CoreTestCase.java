@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import lib.ui.WelcomePageObject;
 import org.openqa.selenium.ScreenOrientation;
 
+import java.time.Duration;
+
 public class CoreTestCase extends TestCase {
 
     protected AppiumDriver driver;
@@ -32,7 +34,7 @@ public class CoreTestCase extends TestCase {
         driver.rotate(ScreenOrientation.LANDSCAPE);
     }
 
-    protected void backgroundApp(int seconds) {
+    protected void backgroundApp(Duration seconds) {
         driver.runAppInBackground(seconds);
     }
 
