@@ -2,28 +2,20 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebElement;
+import lib.Platform;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
 
-    private static final String
-        TITLE = "id:org.wikipedia:id/view_page_title_text",
-        FOOTER_ELEMENT = "xpath://*[@text='View page in browser']",
-        OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-        OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
-        ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-        MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-        MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
-        NAME_OF_EXISTING_FOLDER_TMP = "xpath://*[@text='{FOLDER_NAME}']";
-
-/*
-        CHANGE_LANG_BUTTON = "//*[@text='Change language']",
-        SHARE_LINK_BUTTON = "//*[@text='Share link']",
-        ADD_TO_READING_LIST_BUTTON = "//*[@text='Add to reading list']",
-        FIND_IN_PAGE_BUTTON = "//*[@text='Find in page']",
-        SIMILAR_PAGES_BUTTON = "//*[@text='Similar pages']",
-        FONT_AND_THEME_BUTTON = "//*[@text='Font and theme']";
-*/
+    protected static String
+        TITLE,
+        FOOTER_ELEMENT,
+        OPTIONS_BUTTON,
+        OPTIONS_ADD_TO_MY_LIST_BUTTON,
+        ADD_TO_MY_LIST_OVERLAY,
+        MY_LIST_NAME_INPUT,
+        MY_LIST_OK_BUTTON,
+        CLOSE_ARTICLE_BUTTON,
+        NAME_OF_EXISTING_FOLDER_TMP;
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -43,7 +35,9 @@ public class ArticlePageObject extends MainPageObject {
 
     public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
-        return title_element.getAttribute("text");
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("text");
+        } else return title_element.getAttribute("name");
     }
 
     public void swipeToFooter() {
@@ -59,19 +53,6 @@ public class ArticlePageObject extends MainPageObject {
                 "Can not find button to open article options",
                 5
         );
-
-
-/*
-        this.waitForOptionsMenuToRender(
-                CHANGE_LANG_BUTTON,
-                SHARE_LINK_BUTTON,
-                ADD_TO_READING_LIST_BUTTON,
-                FIND_IN_PAGE_BUTTON,
-                SIMILAR_PAGES_BUTTON,
-                FONT_AND_THEME_BUTTON,
-                "Can not find all options in the menu"
-        );
-*/
 
 
         this.waitForElementAndClick(
@@ -109,15 +90,6 @@ public class ArticlePageObject extends MainPageObject {
                 "Can not find button to open article options",
                 5
         );
-
-/*        this.waitForOptionsMenuToRender(
-                By.xpath("//*[@text='Change language']"),
-                By.xpath("//*[@text='Share link']"),
-                By.xpath("//*[@text='Add to reading list']"),
-                By.xpath("//*[@text='Find in page']"),
-                By.xpath("//*[@text='Font and theme']"),
-                "Can not find all options in the menu"
-        );*/
 
         this.waitForElementAndClick(
                 OPTIONS_ADD_TO_MY_LIST_BUTTON,

@@ -5,6 +5,7 @@ import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class MyListsTests extends CoreTestCase {
     @Test
     public void testSaveFirstArticleToMyList() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         NavigationUI NavigationUI = new NavigationUI(driver);
         MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
 
@@ -33,7 +34,7 @@ public class MyListsTests extends CoreTestCase {
     @Test
     public void testSaveTwoArticlesToMyList() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         NavigationUI NavigationUI = new NavigationUI(driver);
         MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
 
