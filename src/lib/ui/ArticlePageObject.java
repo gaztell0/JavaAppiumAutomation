@@ -26,15 +26,24 @@ abstract public class ArticlePageObject extends MainPageObject {
         return NAME_OF_EXISTING_FOLDER_TMP.replace("{FOLDER_NAME}", name_of_folder);
     }
 
-    public WebElement waitForTitleElement() {
-        return this.waitForElementPresent(
-                TITLE,
-                "Can not find article title on page", 15
-        );
+    private static String getArticleXpathByTitle(String article_title) {
+        return TITLE.replace("{TITLE}", article_title);
     }
 
-    public String getArticleTitle() {
-        WebElement title_element = waitForTitleElement();
+    public WebElement waitForTitleElement(String title_name) {
+        if (Platform.getInstance().isAndroid()) {
+            return this.waitForElementPresent(
+                    TITLE,
+                    "Can not find article title on page", 15
+            );
+        } else {
+            return this.waitForElementPresent(getArticleXpathByTitle(title_name),"Can not find article title on page", 15);
+        }
+
+    }
+
+    public String getArticleTitle(String title_name) {
+        WebElement title_element = waitForTitleElement(title_name);
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
         } else return title_element.getAttribute("name");

@@ -27,8 +27,8 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        ArticlePageObject.waitForTitleElement();
-        String article_title = ArticlePageObject.getArticleTitle();
+        ArticlePageObject.waitForTitleElement("Java (programming language)");
+        String article_title = ArticlePageObject.getArticleTitle("Java (programming language)");
 
         if(Platform.getInstance().isAndroid()) {
             ArticlePageObject.addArticleToMyList(name_of_folder);
@@ -41,7 +41,9 @@ public class MyListsTests extends CoreTestCase {
             ArticlePageObject.closeArticle();
             SearchPageObject.clickCancelSearch();
         }
+
         NavigationUI.clickMyLists();
+
         if (Platform.getInstance().isIOS()) {
             MyListPageObject.clickCloseSyncWindow();
         }
@@ -62,28 +64,56 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        ArticlePageObject.waitForTitleElement();
-        String article_title = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
-        ArticlePageObject.closeArticle();
+        ArticlePageObject.waitForTitleElement("Java (programming language)");
+        String article_title = ArticlePageObject.getArticleTitle("Java (programming language)");
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.closeArticle();
+        } else {
+            ArticlePageObject.closeArticle();
+            SearchPageObject.clickCancelSearch();
+        }
+
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Python");
-        SearchPageObject.clickByArticleWithSubstring("General-purpose programming language");
-        String article_title2 = ArticlePageObject.getArticleTitle();
-        ArticlePageObject.addArticleToExistingMyList(name_of_folder);
-        ArticlePageObject.closeArticle();
+        SearchPageObject.clickByArticleWithSubstring("General-purpose, high-level programming language");
+        ArticlePageObject.waitForTitleElement("Python (programming language)");
+        String article_title2 = ArticlePageObject.getArticleTitle("Python (programming language)");
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToExistingMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.closeArticle();
+        } else {
+            ArticlePageObject.closeArticle();
+            SearchPageObject.clickCancelSearch();
+        }
+
         NavigationUI.clickMyLists();
-        MyListPageObject.openFolderByName(name_of_folder);
+
+        if (Platform.getInstance().isIOS()) {
+            MyListPageObject.clickCloseSyncWindow();
+        }
+        if (Platform.getInstance().isAndroid()) {
+            MyListPageObject.openFolderByName(name_of_folder);
+        }
         MyListPageObject.swipeByArticleToDelete(article_title);
         MyListPageObject.waitForArticleToAppearByTitle(article_title2);
+
+/*        MyListPageObject.waitForArticleToAppearByTitle(article_title2);
         MyListPageObject.openArticleByName(article_title2);
-        String title_inside = ArticlePageObject.getArticleTitle();
+        String title_inside = ArticlePageObject.getArticleTitle("Python (programming language)");
         assertEquals(
                 "Article title has been changed",
                 article_title2,
                 title_inside
-        );
+        );*/
     }
 
 }
